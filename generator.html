@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Generator</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><div class="brand">Receipt Generator</div><nav><a href="dashboard.html">Dashboard</a><a href="index.html">Home</a></nav></header>
+
+<div class="container">
+  <div class="card">
+    <h2>Create Receipt</h2>
+    <div class="form-wrap">
+      <div class="form-field"><label>Template</label>
+        <select id="template">
+          <option value="opay">OPay</option>
+          <option value="palmpay">PalmPay</option>
+          <option value="moniepoint">Moniepoint</option>
+          <option value="firstbank">FirstBank</option>
+          <option value="uba">UBA</option>
+          <option value="kuda">Kuda</option>
+          <option value="gtbank">GTBank</option>
+          <option value="access">Access Bank</option>
+        </select>
+      </div>
+
+      <div class="form-field"><label>Sender</label><input id="sender" value="Sender Name"></div>
+      <div class="form-field"><label>Receiver</label><input id="receiver" value="Receiver Name"></div>
+      <div class="form-field"><label>Amount (NGN)</label><input id="amount" value="2000"></div>
+      <div class="form-field"><label>Transaction ID (optional)</label><input id="txid" placeholder="auto generated"></div>
+      <div class="form-field"><label>Date & Time (optional)</label><input id="date" placeholder="leave empty to use current"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="previewBtn" class="btn">Preview</button>
+        <button id="downloadBtn" class="btn ghost">Download PNG</button>
+        <button id="saveBtn" class="btn" style="background:linear-gradient(90deg,#16a34a,#34d399)">Save to history</button>
+      </div>
+    </div>
+
+    <div class="preview-area">
+      <h3 class="small">Preview</h3>
+      <div id="preview" class="receipt-card"></div>
+    </div>
+  </div>
+</div>
+
+<!-- html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script type="module">
+  import { protectPage, saveReceiptForUser } from './app.js';
+
+  protectPage('login.html'); // require login
+
+  const templates = {
+    generic: (d,title)=>`<div><div class="receipt-title">${title}</div>
+    <div class="receipt-row"><span>From</span><span>${d.sender}</span></div>
+    <div class="receipt-row"><span>To</span><span>${d.receiver}</span></div>
+    <div class="receipt-row"><span>Amount</span><span>₦${d.amount}</span></div>
+    <div class="receipt-row"><span>Ref</span><span>${d.txid}</span></div>
+    <div class="receipt-row"><span>Date</span><span>${d.date}</span></div>
+    <div class="receipt-row"><span>Status</span><span>${d.status}</span></div></div>`
+  };
+
+  const map = {
+    opay: (d)=>templates.generic(d,'OPay Transfer'),
+    palmpay: (d)=>templates.generic(d,'PalmPay Transfer'),
+    moniepoint: (d)=>templates.generic(d,'Moniepoint'),
+    firstbank: (d)=>templates.generic(d,'FirstBank Transfer'),
+    uba: (d)=>templates.generic(d,'UBA Transfer'),
+    kuda: (d)=>templates.generic(d,'Kuda'),
+    gtbank: (d)=>templates.generic(d,'GTBank Transfer'),
+    access: (d)=>templates.generic(d,'Access Bank Transfer')
+  };
+
+  const previewEl = document.getElementById('preview');
+  const fields = ['sender','receiver','amount','txid','date'];
+  function collect(){
+    const sender=document.getElementById('sender').value||'Sender';
+    const receiver=document.getElementById('receiver').value||'Receiver';
+    const amount=document.getElementById('amount').value||'0';
+    let txid=document.getElementById('txid').value; if(!txid) txid='TRX'+Math.floor(Math.random()*100000000);
+    let date=document.getElementById('date').value; if(!date) date=new Date().toLocaleString();
+    const status='Successful';
+    return {sender,receiver,amount,txid,date,status};
+  }
+
+  document.getElementById('previewBtn').addEventListener('click', ()=>{
+    const data=collect();
+    previewEl.innerHTML = map[document.getElementById('template').value](data);
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', async ()=>{
+    const data=collect();
+    previewEl.innerHTML = map[document.getElementById('template').value](data);
+    await new Promise(r=>setTimeout(r,80));
+    html2canvas(previewEl).then(canvas=>{
+      const a=document.createElement('a');
+      a.href=canvas.toDataURL('image/png');
+      a.download='receipt-'+Date.now()+'.png';
+      a.click();
+    }).catch(e=>alert('Image error:'+e.message));
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', async ()=>{
+    try{
+      const data=collect();
+      const id = await saveReceiptForUser({...data, template: document.getElementById('template').value});
+      alert('Saved to your account: ' + id);
+    }catch(e){ alert('Save failed: '+e.message) }
+  });
+
+  // initial preview
+  previewEl.innerHTML = map['opay'](collect());
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign Up</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="card form-wrap">
+  <h2>Create account</h2>
+  <div class="form-field"><label>Email</label><input id="email" type="email"></div>
+  <div class="form-field"><label>Password</label><input id="password" type="password"></div>
+  <div class="form-field"><label>Display name (optional)</label><input id="displayName" type="text"></div>
+  <button id="signupBtn" class="btn">Create account</button>
+  <p class="small">Already have account? <a href="login.html">Login</a></p>
+</div>
+<script type="module">
+  import { signupHandler } from './app.js';
+  document.getElementById('signupBtn').addEventListener('click', async ()=>{
+    const email=document.getElementById('email').value.trim();
+    const password=document.getElementById('password').value;
+    const displayName=document.getElementById('displayName').value.trim();
+    if(!email||!password){ alert('Email and password required'); return; }
+    try{ await signupHandler(email,password,displayName); alert('Account created'); location.href='dashboard.html'; }
+    catch(e){ alert(e.message); }
+  });
+</script>
+</body>
+</html>

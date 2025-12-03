@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><div class="brand">Receipt Generator</div><nav><a href="generator.html">Generator</a><a href="index.html">Home</a></nav></header>
+<div class="container"><div class="card"><h2>Dashboard</h2><p class="muted">Use the generator to create receipts. Your generated receipts can be saved to your account.</p><div style="display:flex;gap:12px"><a class="btn" href="generator.html">Create receipt</a><button id="logout" class="btn red">Logout</button></div></div></div>
+<script type="module">
+  import { protectPage, logoutHandler } from './app.js';
+  protectPage('login.html');
+  document.getElementById('logout').addEventListener('click', async ()=>{ await logoutHandler(); location.href='login.html'; });
+</script>
+</body>
+</html>

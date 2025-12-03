@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Log In</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="card form-wrap">
+  <h2>Log in</h2>
+  <div class="form-field"><label>Email</label><input id="email" type="email"></div>
+  <div class="form-field"><label>Password</label><input id="password" type="password"></div>
+  <button id="loginBtn" class="btn">Log in</button>
+  <p class="small">No account? <a href="signup.html">Sign up</a></p>
+</div>
+<script type="module">
+  import { loginHandler } from './app.js';
+  document.getElementById('loginBtn').addEventListener('click', async ()=>{
+    const email=document.getElementById('email').value.trim();
+    const password=document.getElementById('password').value;
+    try{ await loginHandler(email,password); location.href='dashboard.html'; }
+    catch(e){ alert(e.message); }
+  });
+</script>
+</body>
+</html>
