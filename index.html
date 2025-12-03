@@ -1,44 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Receipt Generator — Home</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Generator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<header class="topbar">
-  <div class="brand">Receipt Generator</div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="signup.html">Sign Up</a>
-    <a href="login.html">Log In</a>
-    <a href="dashboard.html">Dashboard</a>
-  </nav>
-</header>
 
-<main class="container">
-  <section class="hero card">
-    <h1>Create demo receipts for wallets & banks</h1>
-    <p class="muted">For demo, education and entertainment only. No money is sent — these are mock receipts.</p>
-    <div class="actions">
-      <a class="btn" href="signup.html">Get Started</a>
-      <a class="btn ghost" href="generator.html">Try generator</a>
-    </div>
-  </section>
+    <header class="topbar">
+        <h2>Smart Receipt Generator</h2>
+    </header>
 
-  <section class="card features">
-    <h2>Starter templates</h2>
-    <ul class="grid">
-      <li>OPay</li><li>PalmPay</li><li>Moniepoint</li><li>FirstBank</li>
-      <li>UBA</li><li>Kuda</li><li>GTBank</li><li>Access Bank</li>
-    </ul>
-  </section>
-</main>
+    <section class="home-container">
 
-<footer class="foot">Made by Joetech • C.G — For demo/educational use only</footer>
+        <h1>Welcome 👋</h1>
+        <p>Create professional bank/wallet receipts instantly.</p>
 
-<!-- libs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <div class="btn-box">
+            <a href="login.html" class="btn">Login</a>
+            <a href="signup.html" class="btn outline">Create Account</a>
+        </div>
+
+        <div class="preview-box">
+            <h3>Available Banks (8)</h3>
+            <ul>
+                <li>OPay</li>
+                <li>PalmPay</li>
+                <li>Kuda</li>
+                <li>Moniepoint</li>
+                <li>UBA</li>
+                <li>FirstBank</li>
+                <li>GTBank</li>
+                <li>Access Bank</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <script src="app.js"></script>
+
 </body>
 </html>
